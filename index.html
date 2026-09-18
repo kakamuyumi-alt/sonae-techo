@@ -962,7 +962,7 @@ function adjustChipFontSize(grid){
   var clientW = probe.clientWidth;
   anyCell.removeChild(probe);
   if(clientW > 0 && scrollW > clientW){
-    var newFs = Math.max(6, Math.floor(baseFs * (clientW / scrollW) * 10) / 10);
+    var newFs = Math.max(8, Math.floor(baseFs * (clientW / scrollW) * 0.94 * 10) / 10);
     grid.style.setProperty('--chip-fs', newFs + 'px');
   }else{
     grid.style.removeProperty('--chip-fs');
