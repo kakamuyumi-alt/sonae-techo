@@ -296,7 +296,7 @@ button{font-family:inherit;}
 .day-cell{
   background:var(--surface-2);
   border-radius:11px;
-  min-height:88px;
+  height:104px;
   padding:5px 4px;
   display:flex;
   flex-direction:column;
@@ -306,6 +306,7 @@ button{font-family:inherit;}
   text-align:left;
   font-family:inherit;
   color:inherit;
+  overflow:hidden;
   transition:border-color .12s,background .12s;
 }
 .day-cell:hover{border-color:var(--accent);}
@@ -317,24 +318,23 @@ button{font-family:inherit;}
   font-weight:700;
   font-variant-numeric:tabular-nums;
   color:var(--ink-muted);
+  flex:none;
 }
 .day-cell.today .day-num{color:var(--accent-ink);}
 .day-chip{
   font-size:11px;
   line-height:1.3;
-  display:flex;align-items:center;gap:2px;
+  display:block;
   background:var(--surface);
-  border-radius:5px;
-  padding:2px 4px;
+  border-radius:6px;
+  padding:2px 5px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  border-left:3px solid var(--cat-other);
+  border:1.5px solid var(--border);
+  flex:none;
 }
-.day-chip .cdot{width:6px;height:6px;border-radius:50%;flex:none;}
-.day-chip.expiry{background:var(--expiry-bg);border-left-color:var(--expiry-border);font-weight:700;}
-.day-chip.expiry.crit{border-left-color:var(--crit);}
-.day-chip .micon{width:10px;height:10px;stroke-width:2.6;flex:none;}
+.day-chip.expiry{font-weight:700;}
 .day-more{font-size:10.5px;font-weight:600;color:var(--ink-faint);padding-left:4px;}
 
 /* ---------- list view ---------- */
@@ -906,15 +906,15 @@ function renderCalendar(){
     cell.setAttribute('data-date', iso);
 
     var inner = '<div class="day-num">'+d.getDate()+'</div>';
-    var shown = events.slice(0,3);
+    var shown = events.slice(0,2);
     shown.forEach(function(ev){
       var st = ev.kind==='expiry' ? getStatus(ev.it) : null;
       var critCls = st && st.level==='crit' ? ' crit' : '';
-      var iconRef = ev.kind==='purchase' ? '#i-cart' : '#i-hourglass';
-      inner += '<div class="day-chip'+(ev.kind==='expiry'?' expiry'+critCls:'')+'" style="border-left-color:'+(ev.kind==='expiry' ? (st.level==='crit'?'var(--crit)':st.level==='warn'?'var(--warn)':'var(--border)') : catColorCss(ev.it.category))+'">'+
-        '<span class="cdot" style="background:'+catColorCss(ev.it.category)+'"></span>'+
-        '<svg class="icon micon"><use href="'+iconRef+'"/></svg>'+
-        '<span>'+escapeHtml(ev.it.name)+'</span>'+
+      var borderColor = ev.kind==='purchase'
+        ? catColorCss(ev.it.category)
+        : (st.level==='crit' ? 'var(--crit)' : st.level==='warn' ? 'var(--expiry-border)' : 'var(--border)');
+      inner += '<div class="day-chip'+(ev.kind==='expiry'?' expiry'+critCls:'')+'" style="border-color:'+borderColor+'">'+
+        escapeHtml(ev.it.name)+
       '</div>';
     });
     if(events.length > shown.length){
