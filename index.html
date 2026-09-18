@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>そなえ手帖</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
 <style>
@@ -94,10 +99,12 @@
 }
 
 *{box-sizing:border-box;}
+html{height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{
   background:var(--bg);
   color:var(--ink);
   font-family:var(--font-body);
+  font-size:15px;
   margin:0;
   padding-inline:0;
   min-height:100%;
@@ -146,14 +153,14 @@ button{font-family:inherit;}
 }
 .brand-mark .icon{width:20px;height:20px;stroke-width:2.2;}
 .brand-text h1{
-  font-size:20px;
+  font-size:24px;
   margin:0;
-  line-height:1.1;
+  line-height:1.15;
   letter-spacing:.02em;
 }
 .brand-text p{
-  margin:2px 0 0;
-  font-size:11.5px;
+  margin:3px 0 0;
+  font-size:13px;
   color:var(--ink-muted);
 }
 .actions-row{display:flex;align-items:center;gap:10px;}
@@ -242,14 +249,14 @@ button{font-family:inherit;}
   margin-top:14px;
 }
 .legend-item{
-  display:flex;align-items:center;gap:5px;
-  font-size:11.5px;color:var(--ink-muted);
-  padding:4px 9px 4px 7px;
+  display:flex;align-items:center;gap:6px;
+  font-size:13.5px;font-weight:600;color:var(--ink-muted);
+  padding:6px 12px 6px 9px;
   border-radius:999px;
   background:var(--surface);
   border:1px solid var(--border);
 }
-.dot{width:8px;height:8px;border-radius:50%;flex:none;}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;}
 
 /* ---------- calendar ---------- */
 .cal-card{
@@ -264,33 +271,33 @@ button{font-family:inherit;}
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;
 }
-.cal-nav h2{margin:0;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;}
+.cal-nav h2{margin:0;font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;}
 .cal-nav-btns{display:flex;gap:4px;}
 .weekday-row{
   display:grid;
   grid-template-columns:repeat(7,1fr);
-  gap:4px;
+  gap:3px;
   margin-bottom:4px;
 }
 .weekday-row div{
   text-align:center;
-  font-size:11px;
+  font-size:13px;
   font-weight:700;
   color:var(--ink-faint);
-  padding-bottom:4px;
+  padding-bottom:6px;
 }
 .weekday-row div:first-child{color:var(--crit);}
 .weekday-row div:last-child{color:var(--cat-water);}
 .cal-grid{
   display:grid;
   grid-template-columns:repeat(7,1fr);
-  gap:4px;
+  gap:3px;
 }
 .day-cell{
   background:var(--surface-2);
-  border-radius:10px;
-  min-height:86px;
-  padding:5px;
+  border-radius:11px;
+  min-height:88px;
+  padding:5px 4px;
   display:flex;
   flex-direction:column;
   gap:3px;
@@ -306,29 +313,29 @@ button{font-family:inherit;}
 .day-cell.outside{opacity:.42;}
 .day-cell.today{background:var(--accent-tint);}
 .day-num{
-  font-size:11.5px;
+  font-size:13.5px;
   font-weight:700;
   font-variant-numeric:tabular-nums;
   color:var(--ink-muted);
 }
 .day-cell.today .day-num{color:var(--accent-ink);}
 .day-chip{
-  font-size:9.5px;
+  font-size:11px;
   line-height:1.3;
   display:flex;align-items:center;gap:2px;
   background:var(--surface);
   border-radius:5px;
-  padding:1.5px 4px;
+  padding:2px 4px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
   border-left:3px solid var(--cat-other);
 }
-.day-chip .cdot{width:5px;height:5px;border-radius:50%;flex:none;}
+.day-chip .cdot{width:6px;height:6px;border-radius:50%;flex:none;}
 .day-chip.expiry{background:var(--expiry-bg);border-left-color:var(--expiry-border);font-weight:700;}
 .day-chip.expiry.crit{border-left-color:var(--crit);}
-.day-chip .micon{width:8px;height:8px;stroke-width:2.6;flex:none;}
-.day-more{font-size:9.5px;color:var(--ink-faint);padding-left:4px;}
+.day-chip .micon{width:10px;height:10px;stroke-width:2.6;flex:none;}
+.day-more{font-size:10.5px;font-weight:600;color:var(--ink-faint);padding-left:4px;}
 
 /* ---------- list view ---------- */
 .filter-row{
@@ -609,11 +616,13 @@ button{font-family:inherit;}
 }
 
 @media (max-width:480px){
-  .day-cell{min-height:72px;padding:4px;}
-  .day-chip{font-size:8.5px;padding:1px 3px;}
+  .day-cell{min-height:80px;}
+  .day-chip{padding:2px 3px;}
   .brand-text p{display:none;}
 }
 </style>
+</head>
+<body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
@@ -1254,3 +1263,5 @@ setView('calendar');
 
 })();
 </script>
+</body>
+</html>
