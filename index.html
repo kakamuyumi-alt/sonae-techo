@@ -327,15 +327,27 @@ button{font-family:inherit;}
   display:block;
   background:var(--surface);
   border-radius:5px;
-  padding:1.5px 3px;
+  padding:1px 3px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  border:1px solid var(--border);
+  border:2px solid var(--border);
   flex:none;
 }
-.day-chip.expiry{font-weight:700;}
+.day-chip.expiry{
+  font-weight:700;
+  background:var(--expiry-bg);
+  border-color:transparent;
+}
+.day-chip.expiry.crit{color:var(--crit);}
 .day-more{font-size:10.5px;font-weight:600;color:var(--ink-faint);padding-left:4px;}
+
+@media (max-width:640px){
+  .cal-card{padding:8px;}
+  .weekday-row,.cal-grid{gap:2px;}
+  .day-cell{padding:5px 2px;}
+  .day-chip{font-size:9px;padding:1px 2px;}
+}
 
 /* ---------- list view ---------- */
 .filter-row{
@@ -862,6 +874,7 @@ function itemsForDate(iso, kind){
 function renderCalendar(){
   var root = document.getElementById('viewCalendar');
   root.innerHTML = '';
+  var compactNames = window.matchMedia('(max-width:640px)').matches;
 
   var card = el('<div class="cal-card"></div>');
   var monthLabel = state.calMonth.getFullYear()+'年 '+(state.calMonth.getMonth()+1)+'月';
@@ -908,11 +921,11 @@ function renderCalendar(){
     shown.forEach(function(ev){
       var st = ev.kind==='expiry' ? getStatus(ev.it) : null;
       var critCls = st && st.level==='crit' ? ' crit' : '';
-      var borderColor = ev.kind==='purchase'
-        ? catColorCss(ev.it.category)
-        : (st.level==='crit' ? 'var(--crit)' : st.level==='warn' ? 'var(--expiry-border)' : 'var(--border)');
-      inner += '<div class="day-chip'+(ev.kind==='expiry'?' expiry'+critCls:'')+'" style="border-color:'+borderColor+'">'+
-        escapeHtml(ev.it.name)+
+      var styleAttr = ev.kind==='purchase' ? ' style="border-color:'+catColorCss(ev.it.category)+'"' : '';
+      var label = ev.it.name;
+      if(compactNames && label.length > 4) label = label.slice(0,4)+'…';
+      inner += '<div class="day-chip'+(ev.kind==='expiry'?' expiry'+critCls:'')+'"'+styleAttr+'>'+
+        escapeHtml(label)+
       '</div>';
     });
     if(events.length > shown.length){
