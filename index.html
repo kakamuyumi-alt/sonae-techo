@@ -1,0 +1,1257 @@
+<title>そなえ手帖</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#F0F3EF;
+  --surface:#FFFFFF;
+  --surface-2:#E6EBE5;
+  --surface-3:#DCE3DA;
+  --ink:#1B231F;
+  --ink-muted:#5B655F;
+  --ink-faint:#8B958D;
+  --border:#D7DED8;
+  --accent:#1F6F5C;
+  --accent-ink:#0F3D32;
+  --accent-tint:#DCEAE5;
+  --warn:#B8650F;
+  --warn-tint:#F7E7D4;
+  --crit:#B0271F;
+  --crit-tint:#F6DCDA;
+  --ok-tint:#E6EBE5;
+  --expiry-bg:#FFE066;
+  --expiry-border:#B8860B;
+  --shadow:0 8px 24px -8px rgba(20,30,25,0.18), 0 2px 6px -2px rgba(20,30,25,0.10);
+  --radius-s:8px;
+  --radius-m:14px;
+  --radius-l:20px;
+  --font-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --font-body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+
+  --cat-staple:#C77D2E;
+  --cat-side:#B24C43;
+  --cat-water:#2E7DAF;
+  --cat-fuel:#8A5FBF;
+  --cat-daily:#8A7458;
+  --cat-other:#6B7280;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121815;
+    --surface:#1A211D;
+    --surface-2:#212925;
+    --surface-3:#2B342E;
+    --ink:#EAF0E8;
+    --ink-muted:#A8B3A6;
+    --ink-faint:#748076;
+    --border:#333E37;
+    --accent:#5FB39B;
+    --accent-ink:#BFEBDD;
+    --accent-tint:#1E3730;
+    --warn:#E5A650;
+    --warn-tint:#3A2C16;
+    --crit:#E5847C;
+    --crit-tint:#3D2220;
+    --ok-tint:#212925;
+    --expiry-bg:#4A3A0D;
+    --expiry-border:#E3B23C;
+    --shadow:0 8px 24px -8px rgba(0,0,0,0.45), 0 2px 6px -2px rgba(0,0,0,0.3);
+
+    --cat-staple:#E0A55E;
+    --cat-side:#D6857B;
+    --cat-water:#6FA9D6;
+    --cat-fuel:#B191E0;
+    --cat-daily:#B69C7E;
+    --cat-other:#9AA3AA;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121815;
+  --surface:#1A211D;
+  --surface-2:#212925;
+  --surface-3:#2B342E;
+  --ink:#EAF0E8;
+  --ink-muted:#A8B3A6;
+  --ink-faint:#748076;
+  --border:#333E37;
+  --accent:#5FB39B;
+  --accent-ink:#BFEBDD;
+  --accent-tint:#1E3730;
+  --warn:#E5A650;
+  --warn-tint:#3A2C16;
+  --crit:#E5847C;
+  --crit-tint:#3D2220;
+  --ok-tint:#212925;
+  --expiry-bg:#4A3A0D;
+  --expiry-border:#E3B23C;
+  --shadow:0 8px 24px -8px rgba(0,0,0,0.45), 0 2px 6px -2px rgba(0,0,0,0.3);
+
+  --cat-staple:#E0A55E;
+  --cat-side:#D6857B;
+  --cat-water:#6FA9D6;
+  --cat-fuel:#B191E0;
+  --cat-daily:#B69C7E;
+  --cat-other:#9AA3AA;
+}
+
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  margin:0;
+  padding-inline:0;
+  min-height:100%;
+}
+h1,h2,h3,.display{font-family:var(--font-display);}
+a{color:var(--accent);}
+button{font-family:inherit;}
+.icon{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.15em;flex:none;}
+.icon-fill{fill:currentColor;stroke:none;}
+
+/* ---------- layout shell ---------- */
+.app{
+  max-width:920px;
+  margin:0 auto;
+  padding:0 16px calc(48px + env(safe-area-inset-bottom,0px));
+}
+.topbar{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:30;
+  background:var(--bg);
+  padding-top:18px;
+  padding-bottom:12px;
+  border-bottom:1px solid transparent;
+  transition:border-color .2s;
+}
+.topbar.scrolled{border-bottom-color:var(--border);}
+.topbar-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.brand-mark{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--accent);
+  color:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  flex:none;
+}
+.brand-mark .icon{width:20px;height:20px;stroke-width:2.2;}
+.brand-text h1{
+  font-size:20px;
+  margin:0;
+  line-height:1.1;
+  letter-spacing:.02em;
+}
+.brand-text p{
+  margin:2px 0 0;
+  font-size:11.5px;
+  color:var(--ink-muted);
+}
+.actions-row{display:flex;align-items:center;gap:10px;}
+
+.segmented{
+  display:inline-flex;
+  background:var(--surface-2);
+  border-radius:999px;
+  padding:3px;
+  gap:2px;
+}
+.segmented button{
+  border:none;
+  background:transparent;
+  color:var(--ink-muted);
+  padding:8px 16px;
+  border-radius:999px;
+  font-size:13.5px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:background .15s, color .15s;
+}
+.segmented button.active{
+  background:var(--surface);
+  color:var(--accent-ink);
+  box-shadow:0 1px 3px rgba(0,0,0,0.12);
+}
+.segmented button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+
+.btn{
+  appearance:none;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:9px 14px;
+  border-radius:11px;
+  font-size:13.5px;
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:background .15s,border-color .15s,transform .05s;
+}
+.btn:hover{background:var(--surface-2);}
+.btn:active{transform:scale(.97);}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+.btn-primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+.btn-primary:hover{filter:brightness(1.06);}
+.btn-ghost{border-color:transparent;background:transparent;}
+.btn-ghost:hover{background:var(--surface-2);}
+.btn-danger{color:var(--crit);border-color:var(--crit);background:transparent;}
+.btn-danger:hover{background:var(--crit-tint);}
+.btn-icon{padding:9px;border-radius:10px;}
+.btn-block{width:100%;justify-content:center;}
+.btn[disabled]{opacity:.5;cursor:not-allowed;}
+
+/* ---------- banner ---------- */
+.banner{
+  margin-top:14px;
+  border-radius:var(--radius-m);
+  border:1px solid var(--warn);
+  background:var(--warn-tint);
+  color:var(--ink);
+  padding:12px 14px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  cursor:pointer;
+}
+.banner.crit{border-color:var(--crit);background:var(--crit-tint);}
+.banner .icon-wrap{color:var(--warn);flex:none;margin-top:1px;}
+.banner.crit .icon-wrap{color:var(--crit);}
+.banner strong{display:block;font-size:14px;margin-bottom:2px;}
+.banner span{font-size:12.5px;color:var(--ink-muted);}
+.banner .chev{margin-left:auto;color:var(--ink-faint);flex:none;}
+
+/* ---------- category legend ---------- */
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 10px;
+  margin-top:14px;
+}
+.legend-item{
+  display:flex;align-items:center;gap:5px;
+  font-size:11.5px;color:var(--ink-muted);
+  padding:4px 9px 4px 7px;
+  border-radius:999px;
+  background:var(--surface);
+  border:1px solid var(--border);
+}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;}
+
+/* ---------- calendar ---------- */
+.cal-card{
+  margin-top:16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-l);
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.cal-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.cal-nav h2{margin:0;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;}
+.cal-nav-btns{display:flex;gap:4px;}
+.weekday-row{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  margin-bottom:4px;
+}
+.weekday-row div{
+  text-align:center;
+  font-size:11px;
+  font-weight:700;
+  color:var(--ink-faint);
+  padding-bottom:4px;
+}
+.weekday-row div:first-child{color:var(--crit);}
+.weekday-row div:last-child{color:var(--cat-water);}
+.cal-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+}
+.day-cell{
+  background:var(--surface-2);
+  border-radius:10px;
+  min-height:86px;
+  padding:5px;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  cursor:pointer;
+  border:1px solid transparent;
+  text-align:left;
+  font-family:inherit;
+  color:inherit;
+  transition:border-color .12s,background .12s;
+}
+.day-cell:hover{border-color:var(--accent);}
+.day-cell:focus-visible{outline:2px solid var(--accent);}
+.day-cell.outside{opacity:.42;}
+.day-cell.today{background:var(--accent-tint);}
+.day-num{
+  font-size:11.5px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  color:var(--ink-muted);
+}
+.day-cell.today .day-num{color:var(--accent-ink);}
+.day-chip{
+  font-size:9.5px;
+  line-height:1.3;
+  display:flex;align-items:center;gap:2px;
+  background:var(--surface);
+  border-radius:5px;
+  padding:1.5px 4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  border-left:3px solid var(--cat-other);
+}
+.day-chip .cdot{width:5px;height:5px;border-radius:50%;flex:none;}
+.day-chip.expiry{background:var(--expiry-bg);border-left-color:var(--expiry-border);font-weight:700;}
+.day-chip.expiry.crit{border-left-color:var(--crit);}
+.day-chip .micon{width:8px;height:8px;stroke-width:2.6;flex:none;}
+.day-more{font-size:9.5px;color:var(--ink-faint);padding-left:4px;}
+
+/* ---------- list view ---------- */
+.filter-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:16px;
+}
+.filter-chip{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink-muted);
+  font-size:12px;
+  font-weight:700;
+  padding:6px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+}
+.filter-chip .dot{opacity:.55;}
+.filter-chip.active{
+  color:#fff;
+  border-color:var(--fc);
+  background:var(--fc);
+}
+.filter-chip.active .dot{background:#fff !important;opacity:1;}
+
+.list-card{
+  margin-top:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-l);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.item-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  background:var(--surface);
+}
+.item-row:last-child{border-bottom:none;}
+.item-row:hover{background:var(--surface-2);}
+.thumb{
+  width:46px;height:46px;border-radius:10px;flex:none;
+  background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-faint);
+  overflow:hidden;
+  border:1px solid var(--border);
+}
+.thumb img{width:100%;height:100%;object-fit:cover;}
+.item-main{flex:1;min-width:0;}
+.item-title-row{display:flex;align-items:center;gap:7px;}
+.item-name{font-weight:700;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cat-badge{
+  font-size:10.5px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:999px;
+  flex:none;
+  background:color-mix(in srgb, var(--bc) 16%, var(--surface));
+  color:var(--bc);
+}
+.item-sub{font-size:12px;color:var(--ink-muted);margin-top:2px;display:flex;gap:10px;flex-wrap:wrap;}
+.item-sub .sep{color:var(--ink-faint);}
+.status-pill{
+  flex:none;
+  font-size:11.5px;
+  font-weight:800;
+  padding:5px 10px;
+  border-radius:999px;
+  display:flex;align-items:center;gap:4px;
+  white-space:nowrap;
+}
+.status-pill.ok{background:var(--ok-tint);color:var(--ink-muted);}
+.status-pill.warn{background:var(--warn-tint);color:var(--warn);}
+.status-pill.crit{background:var(--crit-tint);color:var(--crit);}
+.status-pill .icon{width:12px;height:12px;stroke-width:3;}
+
+.empty-state{
+  padding:40px 20px;
+  text-align:center;
+  color:var(--ink-muted);
+}
+.empty-state .icon{width:34px;height:34px;color:var(--ink-faint);margin-bottom:10px;}
+.empty-state p{margin:0;font-size:13.5px;}
+
+/* ---------- modal ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;
+  background:rgba(10,15,12,0.5);
+  display:flex;align-items:flex-end;justify-content:center;
+  z-index:100;
+  padding:0;
+  animation:fadeIn .15s ease-out;
+}
+@media (min-width:640px){
+  .modal-backdrop{align-items:center;padding:24px;}
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{transform:translateY(24px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal{
+  background:var(--surface);
+  width:100%;
+  max-width:520px;
+  max-height:88vh;
+  border-radius:20px 20px 0 0;
+  display:flex;flex-direction:column;
+  animation:slideUp .18s ease-out;
+  box-shadow:var(--shadow);
+}
+@media (min-width:640px){
+  .modal{border-radius:var(--radius-l);}
+}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+  flex:none;
+}
+.modal-head h2{margin:0;font-size:17px;}
+.modal-body{
+  padding:18px;
+  overflow-y:auto;
+}
+.modal-foot{
+  padding:14px 18px;
+  border-top:1px solid var(--border);
+  display:flex;gap:10px;
+  flex:none;
+  padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));
+}
+
+/* ---------- form ---------- */
+.field{margin-bottom:16px;}
+.field label{
+  display:block;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--ink-muted);
+  margin-bottom:6px;
+}
+.field input[type="text"],
+.field input[type="date"],
+.field input[type="url"],
+.field select,
+.field textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:14px;
+  font-family:inherit;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:2px solid var(--accent);outline-offset:-1px;
+}
+.field-row{display:flex;gap:10px;}
+.field-row .field{flex:1;}
+.cat-picker{display:flex;flex-wrap:wrap;gap:7px;}
+.cat-opt{
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  border-radius:11px;
+  padding:7px 12px;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--ink-muted);
+  cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+}
+.cat-opt .dot{width:9px;height:9px;}
+.cat-opt.selected{
+  border-color:var(--cc);
+  background:color-mix(in srgb, var(--cc) 14%, var(--surface));
+  color:var(--cc);
+}
+.notify-picker{display:flex;flex-wrap:wrap;gap:7px;}
+.notify-opt{
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  border-radius:999px;
+  padding:7px 13px;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--ink-muted);
+  cursor:pointer;
+}
+.notify-opt.selected{border-color:var(--accent);background:var(--accent-tint);color:var(--accent-ink);}
+
+.photo-drop{
+  border:1.5px dashed var(--border);
+  border-radius:14px;
+  padding:16px;
+  text-align:center;
+  color:var(--ink-muted);
+  cursor:pointer;
+  position:relative;
+}
+.photo-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-drop .icon{width:22px;height:22px;margin-bottom:6px;}
+.photo-drop p{margin:0;font-size:12.5px;}
+.photo-preview{position:relative;border-radius:14px;overflow:hidden;}
+.photo-preview img{width:100%;max-height:220px;object-fit:cover;display:block;}
+.photo-preview .rm{
+  position:absolute;top:8px;right:8px;
+  background:rgba(10,15,12,0.6);
+  color:#fff;border:none;border-radius:8px;
+  width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+}
+.hint{font-size:11.5px;color:var(--ink-faint);margin-top:5px;}
+.err{font-size:11.5px;color:var(--crit);margin-top:5px;display:none;}
+.err.show{display:block;}
+
+/* ---------- detail view ---------- */
+.detail-photo{
+  width:100%;height:180px;border-radius:14px;
+  background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-faint);
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.detail-photo img{width:100%;height:100%;object-fit:cover;}
+.detail-photo .icon{width:36px;height:36px;}
+.detail-status{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 13px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:16px;
+}
+.detail-status.ok{background:var(--ok-tint);color:var(--ink-muted);}
+.detail-status.warn{background:var(--warn-tint);color:var(--warn);}
+.detail-status.crit{background:var(--crit-tint);color:var(--crit);}
+.detail-grid{display:flex;flex-direction:column;gap:13px;margin-bottom:6px;}
+.detail-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding-bottom:13px;border-bottom:1px solid var(--border);}
+.detail-row:last-child{border-bottom:none;padding-bottom:0;}
+.detail-row .k{color:var(--ink-muted);flex:none;}
+.detail-row .v{text-align:right;font-weight:600;}
+.detail-row .v a{display:inline-flex;align-items:center;gap:4px;font-weight:700;}
+
+/* ---------- day panel ---------- */
+.day-panel-list{display:flex;flex-direction:column;gap:8px;}
+.day-panel-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:var(--surface-2);
+  cursor:pointer;
+  border-left:4px solid var(--cc);
+}
+.day-panel-item .kind{
+  font-size:10px;font-weight:800;color:var(--ink-faint);
+  text-transform:uppercase;letter-spacing:.03em;
+  display:flex;align-items:center;gap:3px;
+}
+.day-panel-item .nm{font-weight:700;font-size:13.5px;}
+.day-panel-item.expiry.warn{background:var(--warn-tint);}
+.day-panel-item.expiry.crit{background:var(--crit-tint);}
+
+/* footer note */
+.footnote{
+  margin-top:22px;
+  font-size:11.5px;
+  color:var(--ink-faint);
+  text-align:center;
+  line-height:1.6;
+  padding:0 8px;
+}
+
+@media (max-width:480px){
+  .day-cell{min-height:72px;padding:4px;}
+  .day-chip{font-size:8.5px;padding:1px 3px;}
+  .brand-text p{display:none;}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 21c8 0 14-6 14-15 0 0-13-1-14 9-.5 4 0 6 0 6Z"/><path d="M5 21c2-6 6-10 12-13"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-chevl" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+<symbol id="i-chevr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 22 20 2 20Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle class="icon-fill" cx="12" cy="17" r="1"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24"><path d="M4 8h16l-1.4 9.2A2 2 0 0 1 16.6 19H7.4a2 2 0 0 1-2-1.8L4 8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></symbol>
+<symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12"/><path d="M6 21h12"/><path d="M7 3c0 5.5 4 6 5 6s5-.5 5-6"/><path d="M7 21c0-5.5 4-6 5-6s5 .5 5 6"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 7l1.4-2.6a1 1 0 0 1 .9-.4h3.4a1 1 0 0 1 .9.4L16 7"/><circle cx="12" cy="13.5" r="3.4"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M9.5 14.5 14.5 9.5"/><path d="M13 4.5h6v6"/><path d="M19 4.5 12.5 11"/><path d="M8 6H5.5A2.5 2.5 0 0 0 3 8.5v10A2.5 2.5 0 0 0 5.5 21h10a2.5 2.5 0 0 0 2.5-2.5V16"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4.2 1L4 15.7Z"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.6"/><polyline points="21 15.5 16 10.5 5 21"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+</defs>
+</svg>
+
+<div class="app" id="app">
+  <header class="topbar" id="topbar">
+    <div class="topbar-row">
+      <div class="brand">
+        <div class="brand-mark"><svg class="icon"><use href="#i-leaf"/></svg></div>
+        <div class="brand-text">
+          <h1 class="display">そなえ手帖</h1>
+          <p>防災備蓄の賞味期限・使用期限を管理</p>
+        </div>
+      </div>
+      <div class="actions-row">
+        <div class="segmented" role="tablist">
+          <button id="tabCalendar" class="active" role="tab" aria-selected="true"><svg class="icon"><use href="#i-cal"/></svg>カレンダー</button>
+          <button id="tabList" role="tab" aria-selected="false"><svg class="icon"><use href="#i-list"/></svg>リスト</button>
+        </div>
+        <button class="btn btn-primary" id="btnAdd"><svg class="icon"><use href="#i-plus"/></svg><span class="add-label">追加</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div id="bannerSlot"></div>
+
+  <div id="viewCalendar"></div>
+  <div id="viewList" hidden></div>
+
+  <p class="footnote">データはこの端末のブラウザ内にのみ保存されます。他の端末とは同期されません。ブラウザの閲覧データを消去すると記録も消えるため、このページをブックマークしてご利用ください。</p>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ constants ============ */
+var CATEGORIES = [
+  {id:'staple', label:'主食',      cssVar:'--cat-staple'},
+  {id:'side',   label:'おかず',    cssVar:'--cat-side'},
+  {id:'water',  label:'飲料水',    cssVar:'--cat-water'},
+  {id:'fuel',   label:'燃料・ガス', cssVar:'--cat-fuel'},
+  {id:'daily',  label:'日用品',    cssVar:'--cat-daily'},
+  {id:'other',  label:'その他',    cssVar:'--cat-other'}
+];
+var CAT_MAP = {};
+CATEGORIES.forEach(function(c){ CAT_MAP[c.id] = c; });
+
+var NOTIFY_OPTS = [
+  {days:7,  label:'1週間前'},
+  {days:14, label:'2週間前'},
+  {days:21, label:'3週間前'},
+  {days:30, label:'1ヶ月前'}
+];
+
+var STORAGE_KEY = 'sonae-techo-items-v1';
+var WEEKDAYS = ['日','月','火','水','木','金','土'];
+
+/* ============ state ============ */
+var state = {
+  items: loadItems(),
+  view: 'calendar',
+  calMonth: startOfMonth(new Date()),
+  filterCats: new Set(),
+  bannerOpen: false
+};
+
+/* ============ storage ============ */
+function loadItems(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return [];
+    var arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  }catch(e){
+    console.warn('load failed', e);
+    return [];
+  }
+}
+function saveItems(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+    return true;
+  }catch(e){
+    alert('保存に失敗しました。写真の容量が大きすぎる可能性があります。写真サイズを小さくするか、別の写真をお試しください。');
+    return false;
+  }
+}
+
+/* ============ date helpers ============ */
+function pad2(n){ return n<10 ? '0'+n : ''+n; }
+function toISODate(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+function parseISO(s){
+  if(!s) return null;
+  var p = s.split('-');
+  return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
+}
+function todayISO(){ return toISODate(new Date()); }
+function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
+function addMonths(d, n){ return new Date(d.getFullYear(), d.getMonth()+n, 1); }
+function daysUntil(iso){
+  var target = parseISO(iso);
+  var now = new Date();
+  var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((target - t0) / 86400000);
+}
+function formatJP(iso){
+  if(!iso) return '';
+  var d = parseISO(iso);
+  return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+}
+function formatShort(iso){
+  var d = parseISO(iso);
+  return (d.getMonth()+1)+'/'+d.getDate();
+}
+
+/* ============ status logic ============ */
+function getStatus(item){
+  var d = daysUntil(item.expiryDate);
+  if(d < 0) return {level:'crit', days:d, text:'期限切れ（'+Math.abs(d)+'日経過）'};
+  if(d <= item.notifyDays) return {level:'warn', days:d, text: d===0 ? '本日が期限' : 'あと'+d+'日'};
+  return {level:'ok', days:d, text:'あと'+d+'日'};
+}
+
+/* ============ generic helpers ============ */
+function el(html){
+  var t = document.createElement('template');
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+}
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function uid(){ return 'it_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function catColorCss(catId){ return 'var('+(CAT_MAP[catId]||CAT_MAP.other).cssVar+')'; }
+
+/* ============ image compression ============ */
+function compressImage(file){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onerror = function(){ reject(new Error('read error')); };
+    reader.onload = function(){
+      var img = new Image();
+      img.onerror = function(){ reject(new Error('image error')); };
+      img.onload = function(){
+        var maxDim = 720;
+        var w = img.width, h = img.height;
+        var scale = Math.min(1, maxDim / Math.max(w,h));
+        var cw = Math.round(w*scale), ch = Math.round(h*scale);
+        var canvas = document.createElement('canvas');
+        canvas.width = cw; canvas.height = ch;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, cw, ch);
+        resolve(canvas.toDataURL('image/jpeg', 0.72));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ============ rendering: banner ============ */
+function computeAlerts(){
+  var crit=[], warn=[];
+  state.items.forEach(function(it){
+    var s = getStatus(it);
+    if(s.level==='crit') crit.push(it);
+    else if(s.level==='warn') warn.push(it);
+  });
+  crit.sort(function(a,b){ return daysUntil(a.expiryDate) - daysUntil(b.expiryDate); });
+  warn.sort(function(a,b){ return daysUntil(a.expiryDate) - daysUntil(b.expiryDate); });
+  return {crit:crit, warn:warn};
+}
+function renderBanner(){
+  var slot = document.getElementById('bannerSlot');
+  var alerts = computeAlerts();
+  var total = alerts.crit.length + alerts.warn.length;
+  if(total===0){ slot.innerHTML=''; return; }
+  var isCrit = alerts.crit.length>0;
+  var headline = isCrit
+    ? '期限切れの品目が'+alerts.crit.length+'件あります'
+    : '期限が近い品目が'+alerts.warn.length+'件あります';
+  var sub = isCrit && alerts.warn.length>0
+    ? ('ほか、期限が近いもの'+alerts.warn.length+'件')
+    : 'タップしてリストを確認';
+  slot.innerHTML = '';
+  var b = el(
+    '<div class="banner'+(isCrit?' crit':'')+'" id="alertBanner">'+
+      '<div class="icon-wrap"><svg class="icon" style="width:20px;height:20px"><use href="#i-warn"/></svg></div>'+
+      '<div><strong>'+escapeHtml(headline)+'</strong><span>'+escapeHtml(sub)+'</span></div>'+
+      '<div class="chev"><svg class="icon"><use href="#i-chevr"/></svg></div>'+
+    '</div>'
+  );
+  b.addEventListener('click', function(){
+    setView('list');
+    state.filterCats.clear();
+  });
+  slot.appendChild(b);
+}
+
+/* ============ rendering: legend ============ */
+function renderLegend(container){
+  var wrap = el('<div class="legend"></div>');
+  CATEGORIES.forEach(function(c){
+    var item = el('<div class="legend-item"><span class="dot" style="background:'+catColorCss(c.id)+'"></span>'+escapeHtml(c.label)+'</div>');
+    wrap.appendChild(item);
+  });
+  container.appendChild(wrap);
+}
+
+/* ============ rendering: calendar ============ */
+function itemsForDate(iso, kind){
+  return state.items.filter(function(it){
+    return kind==='purchase' ? it.purchaseDate===iso : it.expiryDate===iso;
+  });
+}
+function renderCalendar(){
+  var root = document.getElementById('viewCalendar');
+  root.innerHTML = '';
+
+  var card = el('<div class="cal-card"></div>');
+  var monthLabel = state.calMonth.getFullYear()+'年 '+(state.calMonth.getMonth()+1)+'月';
+  var nav = el(
+    '<div class="cal-nav">'+
+      '<h2>'+monthLabel+'</h2>'+
+      '<div class="cal-nav-btns">'+
+        '<button class="btn btn-icon btn-ghost" id="calPrev" aria-label="前の月"><svg class="icon"><use href="#i-chevl"/></svg></button>'+
+        '<button class="btn btn-ghost" id="calToday" style="font-size:12px;padding:9px 12px;">今日</button>'+
+        '<button class="btn btn-icon btn-ghost" id="calNext" aria-label="次の月"><svg class="icon"><use href="#i-chevr"/></svg></button>'+
+      '</div>'+
+    '</div>'
+  );
+  card.appendChild(nav);
+
+  var wdRow = el('<div class="weekday-row"></div>');
+  WEEKDAYS.forEach(function(w){ wdRow.appendChild(el('<div>'+w+'</div>')); });
+  card.appendChild(wdRow);
+
+  var grid = el('<div class="cal-grid"></div>');
+  var firstOfMonth = state.calMonth;
+  var startWeekday = firstOfMonth.getDay();
+  var gridStart = new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth(), 1 - startWeekday);
+  var todayStr = todayISO();
+
+  for(var i=0;i<42;i++){
+    var d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate()+i);
+    var iso = toISODate(d);
+    var outside = d.getMonth() !== firstOfMonth.getMonth();
+    var isToday = iso === todayStr;
+
+    var purchases = itemsForDate(iso, 'purchase');
+    var expiries = itemsForDate(iso, 'expiry');
+    var events = purchases.map(function(it){ return {it:it, kind:'purchase'}; })
+      .concat(expiries.map(function(it){ return {it:it, kind:'expiry'}; }));
+
+    var cell = document.createElement('button');
+    cell.type = 'button';
+    cell.className = 'day-cell'+(outside?' outside':'')+(isToday?' today':'');
+    cell.setAttribute('data-date', iso);
+
+    var inner = '<div class="day-num">'+d.getDate()+'</div>';
+    var shown = events.slice(0,3);
+    shown.forEach(function(ev){
+      var st = ev.kind==='expiry' ? getStatus(ev.it) : null;
+      var critCls = st && st.level==='crit' ? ' crit' : '';
+      var iconRef = ev.kind==='purchase' ? '#i-cart' : '#i-hourglass';
+      inner += '<div class="day-chip'+(ev.kind==='expiry'?' expiry'+critCls:'')+'" style="border-left-color:'+(ev.kind==='expiry' ? (st.level==='crit'?'var(--crit)':st.level==='warn'?'var(--warn)':'var(--border)') : catColorCss(ev.it.category))+'">'+
+        '<span class="cdot" style="background:'+catColorCss(ev.it.category)+'"></span>'+
+        '<svg class="icon micon"><use href="'+iconRef+'"/></svg>'+
+        '<span>'+escapeHtml(ev.it.name)+'</span>'+
+      '</div>';
+    });
+    if(events.length > shown.length){
+      inner += '<div class="day-more">+'+(events.length-shown.length)+'件</div>';
+    }
+    cell.innerHTML = inner;
+    cell.addEventListener('click', function(){
+      openDayPanel(this.getAttribute('data-date'));
+    });
+    grid.appendChild(cell);
+  }
+  card.appendChild(grid);
+  root.appendChild(card);
+  renderLegend(root);
+
+  nav.querySelector('#calPrev').addEventListener('click', function(){ state.calMonth = addMonths(state.calMonth,-1); renderCalendar(); });
+  nav.querySelector('#calNext').addEventListener('click', function(){ state.calMonth = addMonths(state.calMonth, 1); renderCalendar(); });
+  nav.querySelector('#calToday').addEventListener('click', function(){ state.calMonth = startOfMonth(new Date()); renderCalendar(); });
+}
+
+/* ============ rendering: list ============ */
+function renderList(){
+  var root = document.getElementById('viewList');
+  root.innerHTML = '';
+
+  var filterRow = el('<div class="filter-row"></div>');
+  CATEGORIES.forEach(function(c){
+    var active = state.filterCats.has(c.id);
+    var chip = el('<button type="button" class="filter-chip'+(active?' active':'')+'" style="--fc:'+catColorCss(c.id)+'"><span class="dot" style="background:'+catColorCss(c.id)+'"></span>'+escapeHtml(c.label)+'</button>');
+    chip.addEventListener('click', function(){
+      if(state.filterCats.has(c.id)) state.filterCats.delete(c.id);
+      else state.filterCats.add(c.id);
+      renderList();
+    });
+    filterRow.appendChild(chip);
+  });
+  root.appendChild(filterRow);
+
+  var listCard = el('<div class="list-card"></div>');
+  var items = state.items.slice();
+  if(state.filterCats.size>0){
+    items = items.filter(function(it){ return state.filterCats.has(it.category); });
+  }
+  items.sort(function(a,b){ return daysUntil(a.expiryDate) - daysUntil(b.expiryDate); });
+
+  if(items.length===0){
+    listCard.appendChild(el(
+      '<div class="empty-state">'+
+        '<svg class="icon"><use href="#i-cal"/></svg>'+
+        '<p>'+(state.items.length===0 ? '登録された備蓄品はまだありません。右上の「追加」から登録しましょう。' : '該当する品目がありません。')+'</p>'+
+      '</div>'
+    ));
+  }else{
+    items.forEach(function(it){
+      var st = getStatus(it);
+      var cat = CAT_MAP[it.category] || CAT_MAP.other;
+      var row = el(
+        '<div class="item-row" style="--bc:'+catColorCss(it.category)+'">'+
+          '<div class="thumb">'+(it.photo ? '<img src="'+it.photo+'" alt="">' : '<svg class="icon"><use href="#i-image"/></svg>')+'</div>'+
+          '<div class="item-main">'+
+            '<div class="item-title-row"><span class="item-name">'+escapeHtml(it.name)+'</span><span class="cat-badge">'+escapeHtml(cat.label)+'</span></div>'+
+            '<div class="item-sub"><span>購入 '+formatShort(it.purchaseDate)+'</span><span class="sep">・</span><span>期限 '+formatShort(it.expiryDate)+'</span></div>'+
+          '</div>'+
+          '<div class="status-pill '+st.level+'">'+(st.level!=='ok' ? '<svg class="icon"><use href="#i-warn"/></svg>' : '')+escapeHtml(st.text)+'</div>'+
+        '</div>'
+      );
+      row.addEventListener('click', function(){ openDetail(it.id); });
+      listCard.appendChild(row);
+    });
+  }
+  root.appendChild(listCard);
+}
+
+/* ============ view switching ============ */
+function setView(v){
+  state.view = v;
+  document.getElementById('viewCalendar').hidden = v!=='calendar';
+  document.getElementById('viewList').hidden = v!=='list';
+  document.getElementById('tabCalendar').classList.toggle('active', v==='calendar');
+  document.getElementById('tabCalendar').setAttribute('aria-selected', v==='calendar');
+  document.getElementById('tabList').classList.toggle('active', v==='list');
+  document.getElementById('tabList').setAttribute('aria-selected', v==='list');
+  if(v==='calendar') renderCalendar(); else renderList();
+}
+
+/* ============ modal system ============ */
+function closeModal(){
+  var root = document.getElementById('modalRoot');
+  root.innerHTML = '';
+}
+function openModal(innerHtml, opts){
+  opts = opts || {};
+  var root = document.getElementById('modalRoot');
+  root.innerHTML = '';
+  var backdrop = el('<div class="modal-backdrop"><div class="modal">'+innerHtml+'</div></div>');
+  if(!opts.noBackdropClose){
+    backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
+  }
+  root.appendChild(backdrop);
+  return backdrop;
+}
+
+/* ============ day panel ============ */
+function openDayPanel(iso){
+  var purchases = itemsForDate(iso,'purchase');
+  var expiries = itemsForDate(iso,'expiry');
+  var html =
+    '<div class="modal-head"><h2>'+formatJP(iso)+'</h2><button class="btn btn-icon btn-ghost" id="mClose"><svg class="icon"><use href="#i-close"/></svg></button></div>'+
+    '<div class="modal-body"><div class="day-panel-list" id="dpList"></div></div>'+
+    '<div class="modal-foot"><button class="btn btn-primary btn-block" id="dpAdd"><svg class="icon"><use href="#i-plus"/></svg>この日を購入日として登録</button></div>';
+  var backdrop = openModal(html);
+  var list = backdrop.querySelector('#dpList');
+
+  if(purchases.length===0 && expiries.length===0){
+    list.appendChild(el('<div class="empty-state" style="padding:20px 4px;"><p>この日に登録された品目はありません。</p></div>'));
+  }
+  purchases.forEach(function(it){
+    var row = el(
+      '<div class="day-panel-item" style="--cc:'+catColorCss(it.category)+'">'+
+        '<svg class="icon"><use href="#i-cart"/></svg>'+
+        '<div><div class="kind">購入日</div><div class="nm">'+escapeHtml(it.name)+'</div></div>'+
+      '</div>'
+    );
+    row.addEventListener('click', function(){ openDetail(it.id); });
+    list.appendChild(row);
+  });
+  expiries.forEach(function(it){
+    var st = getStatus(it);
+    var row = el(
+      '<div class="day-panel-item expiry '+(st.level!=='ok'?st.level:'')+'" style="--cc:'+catColorCss(it.category)+'">'+
+        '<svg class="icon"><use href="#i-hourglass"/></svg>'+
+        '<div><div class="kind">期限日</div><div class="nm">'+escapeHtml(it.name)+'</div></div>'+
+      '</div>'
+    );
+    row.addEventListener('click', function(){ openDetail(it.id); });
+    list.appendChild(row);
+  });
+
+  backdrop.querySelector('#mClose').addEventListener('click', closeModal);
+  backdrop.querySelector('#dpAdd').addEventListener('click', function(){
+    openForm(null, iso);
+  });
+}
+
+/* ============ detail view ============ */
+function openDetail(id){
+  var it = state.items.find(function(x){ return x.id===id; });
+  if(!it) return closeModal();
+  var st = getStatus(it);
+  var cat = CAT_MAP[it.category] || CAT_MAP.other;
+
+  var statusIcon = st.level!=='ok' ? '<svg class="icon"><use href="#i-warn"/></svg>' : '<svg class="icon"><use href="#i-check"/></svg>';
+
+  var html =
+    '<div class="modal-head"><h2>品目の詳細</h2><button class="btn btn-icon btn-ghost" id="mClose"><svg class="icon"><use href="#i-close"/></svg></button></div>'+
+    '<div class="modal-body">'+
+      '<div class="detail-photo">'+(it.photo ? '<img src="'+it.photo+'" alt="">' : '<svg class="icon"><use href="#i-image"/></svg>')+'</div>'+
+      '<h3 style="margin:0 0 10px;font-size:19px;">'+escapeHtml(it.name)+'</h3>'+
+      '<div class="detail-status '+st.level+'">'+statusIcon+' '+escapeHtml(st.text)+'</div>'+
+      '<div class="detail-grid">'+
+        '<div class="detail-row"><span class="k">分類</span><span class="v"><span class="cat-badge" style="--bc:'+catColorCss(it.category)+'">'+escapeHtml(cat.label)+'</span></span></div>'+
+        '<div class="detail-row"><span class="k">購入日</span><span class="v">'+formatJP(it.purchaseDate)+'</span></div>'+
+        '<div class="detail-row"><span class="k">賞味・使用期限</span><span class="v">'+formatJP(it.expiryDate)+'</span></div>'+
+        '<div class="detail-row"><span class="k">通知タイミング</span><span class="v">期限の'+(NOTIFY_OPTS.find(function(o){return o.days===it.notifyDays;})||{label:it.notifyDays+'日前'}).label+'</span></div>'+
+        (it.link ? '<div class="detail-row"><span class="k">購入先</span><span class="v"><a href="'+escapeHtml(it.link)+'" target="_blank" rel="noopener noreferrer">リンクを開く <svg class="icon"><use href="#i-link"/></svg></a></span></div>' : '')+
+        (it.memo ? '<div class="detail-row"><span class="k">メモ</span><span class="v">'+escapeHtml(it.memo)+'</span></div>' : '')+
+      '</div>'+
+    '</div>'+
+    '<div class="modal-foot">'+
+      '<button class="btn btn-danger btn-icon" id="dDelete" aria-label="削除"><svg class="icon"><use href="#i-trash"/></svg></button>'+
+      '<button class="btn btn-block" id="dEdit"><svg class="icon"><use href="#i-edit"/></svg>編集する</button>'+
+    '</div>';
+
+  var backdrop = openModal(html);
+  backdrop.querySelector('#mClose').addEventListener('click', closeModal);
+  backdrop.querySelector('#dEdit').addEventListener('click', function(){ openForm(it); });
+  backdrop.querySelector('#dDelete').addEventListener('click', function(){
+    if(confirm('「'+it.name+'」を削除します。よろしいですか？')){
+      state.items = state.items.filter(function(x){ return x.id!==it.id; });
+      saveItems();
+      closeModal();
+      refreshAll();
+    }
+  });
+}
+
+/* ============ add / edit form ============ */
+function openForm(existing, prefillDate){
+  var isEdit = !!existing;
+  var draft = isEdit ? Object.assign({}, existing) : {
+    id: uid(),
+    name: '',
+    category: 'staple',
+    purchaseDate: prefillDate || todayISO(),
+    expiryDate: '',
+    notifyDays: 7,
+    photo: null,
+    link: '',
+    memo: ''
+  };
+
+  var html =
+    '<div class="modal-head"><h2>'+(isEdit?'品目を編集':'品目を追加')+'</h2><button class="btn btn-icon btn-ghost" id="mClose"><svg class="icon"><use href="#i-close"/></svg></button></div>'+
+    '<div class="modal-body">'+
+      '<div class="field"><label for="fName">品名</label><input type="text" id="fName" maxlength="60" placeholder="例）アルファ米 五目ごはん" value="'+escapeHtml(draft.name)+'"></div>'+
+      '<div class="field"><label>分類</label><div class="cat-picker" id="fCatPicker"></div></div>'+
+      '<div class="field-row">'+
+        '<div class="field"><label for="fPurchase">購入日</label><input type="date" id="fPurchase" value="'+draft.purchaseDate+'"></div>'+
+        '<div class="field"><label for="fExpiry">賞味・使用期限</label><input type="date" id="fExpiry" value="'+draft.expiryDate+'"></div>'+
+      '</div>'+
+      '<div class="err" id="fErr">期限日を入力してください。</div>'+
+      '<div class="field"><label>通知タイミング（期限のどれくらい前に知らせるか）</label><div class="notify-picker" id="fNotifyPicker"></div></div>'+
+      '<div class="field"><label>写真</label><div id="fPhotoWrap"></div></div>'+
+      '<div class="field"><label for="fLink">購入先リンク（任意）</label><input type="url" id="fLink" placeholder="https://..." value="'+escapeHtml(draft.link||'')+'"></div>'+
+      '<div class="field"><label for="fMemo">メモ（任意）</label><textarea id="fMemo" rows="2" placeholder="保管場所など">'+escapeHtml(draft.memo||'')+'</textarea></div>'+
+    '</div>'+
+    '<div class="modal-foot">'+
+      (isEdit ? '<button class="btn btn-danger btn-icon" id="fDelete" aria-label="削除"><svg class="icon"><use href="#i-trash"/></svg></button>' : '')+
+      '<button class="btn btn-primary btn-block" id="fSave"><svg class="icon"><use href="#i-check"/></svg>保存する</button>'+
+    '</div>';
+
+  var backdrop = openModal(html, {noBackdropClose:true});
+  var body = backdrop.querySelector('.modal-body');
+
+  // category picker
+  var catPicker = backdrop.querySelector('#fCatPicker');
+  CATEGORIES.forEach(function(c){
+    var opt = el('<button type="button" class="cat-opt'+(draft.category===c.id?' selected':'')+'" style="--cc:'+catColorCss(c.id)+'"><span class="dot" style="background:'+catColorCss(c.id)+'"></span>'+escapeHtml(c.label)+'</button>');
+    opt.addEventListener('click', function(){
+      draft.category = c.id;
+      catPicker.querySelectorAll('.cat-opt').forEach(function(n){ n.classList.remove('selected'); });
+      opt.classList.add('selected');
+    });
+    catPicker.appendChild(opt);
+  });
+
+  // notify picker
+  var notifyPicker = backdrop.querySelector('#fNotifyPicker');
+  NOTIFY_OPTS.forEach(function(o){
+    var opt = el('<button type="button" class="notify-opt'+(draft.notifyDays===o.days?' selected':'')+'">'+o.label+'</button>');
+    opt.addEventListener('click', function(){
+      draft.notifyDays = o.days;
+      notifyPicker.querySelectorAll('.notify-opt').forEach(function(n){ n.classList.remove('selected'); });
+      opt.classList.add('selected');
+    });
+    notifyPicker.appendChild(opt);
+  });
+
+  // photo
+  function renderPhotoWrap(){
+    var wrap = backdrop.querySelector('#fPhotoWrap');
+    wrap.innerHTML = '';
+    if(draft.photo){
+      var pv = el('<div class="photo-preview"><img src="'+draft.photo+'" alt=""><button type="button" class="rm" aria-label="写真を削除"><svg class="icon"><use href="#i-close"/></svg></button></div>');
+      pv.querySelector('.rm').addEventListener('click', function(){ draft.photo = null; renderPhotoWrap(); });
+      wrap.appendChild(pv);
+    }else{
+      var drop = el(
+        '<label class="photo-drop">'+
+          '<input type="file" accept="image/*" id="fPhotoInput">'+
+          '<svg class="icon"><use href="#i-camera"/></svg>'+
+          '<p>タップして写真を選択</p>'+
+        '</label>'
+      );
+      wrap.appendChild(drop);
+      drop.querySelector('#fPhotoInput').addEventListener('change', function(e){
+        var file = e.target.files[0];
+        if(!file) return;
+        compressImage(file).then(function(dataUrl){
+          draft.photo = dataUrl;
+          renderPhotoWrap();
+        }).catch(function(){
+          alert('写真の読み込みに失敗しました。別の画像でお試しください。');
+        });
+      });
+    }
+  }
+  renderPhotoWrap();
+
+  backdrop.querySelector('#mClose').addEventListener('click', closeModal);
+  if(isEdit){
+    backdrop.querySelector('#fDelete').addEventListener('click', function(){
+      if(confirm('「'+draft.name+'」を削除します。よろしいですか？')){
+        state.items = state.items.filter(function(x){ return x.id!==draft.id; });
+        saveItems();
+        closeModal();
+        refreshAll();
+      }
+    });
+  }
+  backdrop.querySelector('#fSave').addEventListener('click', function(){
+    var name = backdrop.querySelector('#fName').value.trim();
+    var purchaseDate = backdrop.querySelector('#fPurchase').value;
+    var expiryDate = backdrop.querySelector('#fExpiry').value;
+    var link = backdrop.querySelector('#fLink').value.trim();
+    var memo = backdrop.querySelector('#fMemo').value.trim();
+    var errBox = backdrop.querySelector('#fErr');
+
+    if(!name || !expiryDate || !purchaseDate){
+      errBox.textContent = !name ? '品名を入力してください。' : '購入日と期限日を入力してください。';
+      errBox.classList.add('show');
+      return;
+    }
+    if(link && !/^https?:\/\//i.test(link)){
+      errBox.textContent = '購入先リンクは http:// または https:// から始めてください。';
+      errBox.classList.add('show');
+      return;
+    }
+    errBox.classList.remove('show');
+
+    draft.name = name;
+    draft.purchaseDate = purchaseDate;
+    draft.expiryDate = expiryDate;
+    draft.link = link;
+    draft.memo = memo;
+
+    var idx = state.items.findIndex(function(x){ return x.id===draft.id; });
+    if(idx>=0) state.items[idx] = draft; else state.items.push(draft);
+
+    if(saveItems()){
+      closeModal();
+      refreshAll();
+    }
+  });
+
+  setTimeout(function(){ var f=backdrop.querySelector('#fName'); if(f) f.focus(); }, 50);
+}
+
+/* ============ global refresh ============ */
+function refreshAll(){
+  renderBanner();
+  if(state.view==='calendar') renderCalendar(); else renderList();
+}
+
+/* ============ init ============ */
+document.getElementById('tabCalendar').addEventListener('click', function(){ setView('calendar'); });
+document.getElementById('tabList').addEventListener('click', function(){ setView('list'); });
+document.getElementById('btnAdd').addEventListener('click', function(){ openForm(null, null); });
+
+window.addEventListener('scroll', function(){
+  document.getElementById('topbar').classList.toggle('scrolled', window.scrollY>4);
+}, {passive:true});
+
+renderBanner();
+setView('calendar');
+
+})();
+</script>
