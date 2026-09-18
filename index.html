@@ -429,7 +429,7 @@ button{font-family:inherit;}
   padding:0;
   animation:fadeIn .15s ease-out;
 }
-@media (min-width:640px){
+@media (min-width:860px){
   .modal-backdrop{align-items:center;padding:24px;}
 }
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
@@ -437,15 +437,14 @@ button{font-family:inherit;}
 .modal{
   background:var(--surface);
   width:100%;
-  max-width:520px;
   max-height:88vh;
   border-radius:20px 20px 0 0;
   display:flex;flex-direction:column;
   animation:slideUp .18s ease-out;
   box-shadow:var(--shadow);
 }
-@media (min-width:640px){
-  .modal{border-radius:var(--radius-l);}
+@media (min-width:860px){
+  .modal{max-width:560px;border-radius:var(--radius-l);}
 }
 .modal-head{
   display:flex;align-items:center;justify-content:space-between;
