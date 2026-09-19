@@ -948,21 +948,31 @@ function renderCalendar(){
   nav.querySelector('#calToday').addEventListener('click', function(){ state.calMonth = startOfMonth(new Date()); renderCalendar(); });
 }
 
-/* ============ chip font-size auto-fit (guarantees 4 chars visible) ============ */
+/* ============ chip font-size auto-fit (guarantees 4 chars visible in every column) ============ */
 function adjustChipFontSize(grid){
-  var anyCell = grid.querySelector('.day-cell');
-  if(!anyCell) return;
-  var probe = document.createElement('div');
-  probe.className = 'day-chip';
-  probe.style.visibility = 'hidden';
-  probe.textContent = 'あいうえ…';
-  anyCell.appendChild(probe);
-  var baseFs = parseFloat(getComputedStyle(probe).fontSize) || 9;
-  var scrollW = probe.scrollWidth;
-  var clientW = probe.clientWidth;
-  anyCell.removeChild(probe);
-  if(clientW > 0 && scrollW > clientW){
-    var newFs = Math.max(5.5, Math.floor(baseFs * (clientW / scrollW) * 0.97 * 10) / 10);
+  var cells = Array.prototype.slice.call(grid.querySelectorAll('.day-cell'), 0, 7);
+  if(!cells.length) return;
+  var probes = cells.map(function(cell){
+    var probe = document.createElement('div');
+    probe.className = 'day-chip';
+    probe.style.visibility = 'hidden';
+    probe.textContent = 'あいうえ…';
+    cell.appendChild(probe);
+    return {cell:cell, probe:probe};
+  });
+  var baseFs = parseFloat(getComputedStyle(probes[0].probe).fontSize) || 9;
+  var minScale = Infinity;
+  probes.forEach(function(p){
+    var scrollW = p.probe.scrollWidth;
+    var clientW = p.probe.clientWidth;
+    if(clientW > 0){
+      var scale = clientW / scrollW;
+      if(scale < minScale) minScale = scale;
+    }
+    p.cell.removeChild(p.probe);
+  });
+  if(isFinite(minScale) && minScale < 1){
+    var newFs = Math.max(5.5, Math.floor(baseFs * minScale * 0.95 * 10) / 10);
     grid.style.setProperty('--chip-fs', newFs + 'px');
   }else{
     grid.style.removeProperty('--chip-fs');
